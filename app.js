@@ -1,4 +1,5 @@
 const express = require('express');
+var cors = require('cors')
 const mongoose = require('mongoose');
 const passport = require('passport');
 const bodyParser = require('body-parser');
@@ -15,6 +16,8 @@ const userRoute = require('./routes/user-routes');
 
 const app = express();
 
+app.use(cors());
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
@@ -29,6 +32,6 @@ app.use(function(err, req, res, next) {
     res.json({ error: err });
 });
 
-app.listen(3000, () => {
+app.listen(8080, () => {
     console.log('Server started.')
 });
