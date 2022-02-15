@@ -7,17 +7,19 @@ mongoose.connect('mongodb+srv://root:root@cluster0.cragk.mongodb.net/myFirstData
 mongoose.connection.on('error', error => console.log(error) );
 mongoose.Promise = global.Promise;
 
-// require('./auth/auth');
-// require('./model/vocabulary')
-
 const routes = require('./routes/routes');
 const userRoutes = require('./routes/user-routes');
 const categoryRoutes = require('./routes/category-routes');
+const cors = require('cors');
 
 const app = express();
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(cors({
+    origin: '*',
+    methods: ['GET', 'HEAD', 'PUT', 'POST', 'DELETE']
+}));
 
 app.use('/', routes);
 
