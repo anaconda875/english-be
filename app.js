@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const passport = require('passport');
 const bodyParser = require('body-parser');
+require('./auth/auth');
 
 mongoose.connect('mongodb+srv://root:root@cluster0.cragk.mongodb.net/myFirstDatabase?retryWrites=true&w=majority');
 mongoose.connection.on('error', error => console.log(error) );
@@ -29,6 +30,7 @@ app.use('/categories', categoryRoutes);
 
 // Handle errors.
 app.use(function(err, req, res, next) {
+    console.log(err)
     res.status(err.status || 500);
     res.json({ error: err });
 });
