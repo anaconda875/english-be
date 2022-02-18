@@ -14,7 +14,8 @@ const UserSchema = new Schema({
         required: true
     },
     firstName: String,
-    lastName: String
+    lastName: String,
+    vocabularies: [{ type: Schema.Types.ObjectId, ref: 'vocabulary' }]
 });
 
 UserSchema.pre(
@@ -29,9 +30,10 @@ UserSchema.pre(
 UserSchema.pre(
     'findOneAndUpdate',
     async function(next) {
-        let password = this._update.$set.password;
-        if(password)
+        if(this._update.$set && this._update.$set.password) {
+            let password = this._update.$set.password;
             this._update.$set.password = await bcrypt.hash(password, 10)
+        }
         next();
     }
 );
