@@ -33,6 +33,8 @@ UserSchema.pre(
         if(this._update.$set && this._update.$set.password) {
             let password = this._update.$set.password;
             this._update.$set.password = await bcrypt.hash(password, 10)
+        } else {
+            delete this._update.$set['password']
         }
         next();
     }
