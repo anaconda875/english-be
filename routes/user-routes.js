@@ -20,6 +20,23 @@ router.get("/profile", async (req, res, next) => {
   // })
 });
 
+router.put("/password", async (req, res, next) => {
+  const id = req.user._id;
+  const { oldPassword, newPassword } = req.body;
+  const user = await UserModel.findById(id);
+  if (await user.isValidPassword(oldPassword)) {
+    user.password = newPassword;
+    await user.save();
+    res.status(200).json({
+      message: "Password updated",
+    });
+  } else {
+    res.status(500).json({
+      message: "Internal Server Error",
+    });
+  }
+});
+
 router.put("/", async (req, res, next) => {
   UserModel.findByIdAndUpdate(
     req.user._id,
