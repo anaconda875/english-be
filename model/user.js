@@ -25,12 +25,13 @@ UserSchema.pre("save", async function (next) {
 });
 
 UserSchema.pre("findOneAndUpdate", async function (next) {
-  if (this._update.$set && this._update.$set.password) {
-    let password = this._update.$set.password;
-    this._update.$set.password = await bcrypt.hash(password, 10);
-  } else {
-    delete this._update.$set["password"];
-  }
+  if (this._update.$set)
+      if(this._update.$set.password) {
+        let password = this._update.$set.password;
+        this._update.$set.password = await bcrypt.hash(password, 10);
+      } else {
+        delete this._update.$set["password"];
+      }
   next();
 });
 
